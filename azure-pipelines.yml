@@ -21,6 +21,11 @@ steps:
       backendAzureRmContainerName: 'cont25'
       backendAzureRmKey: 'pass245'
 
-  
+  - task: TerraformTask@5
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: '$(System.DefaultWorkingDirectory)\rgstgcodee25\provider_parents'
+      environmentServiceNameAzureRM: 'agentportal'
 
   
