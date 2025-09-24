@@ -9,15 +9,3 @@ steps:
     displayName: "Install Latest Terraform"
     inputs:
       terraformVersion: 'latest'
-
-  # Step 2: Terraform init
-  - task: TerraformTask@5
-    displayName: "Terraform Init"
-    inputs:
-      provider: 'azurerm'
-      command: 'init'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/rgstgcodee25/provider_parents'
-      backendAzureRmResourceGroupName: 'rg24'
-      backendAzureRmStorageAccountName: 'stg25'
-      backendAzureRmContainerName: 'cont25'
-      backendAzureRmKey: 'pass4567*'
