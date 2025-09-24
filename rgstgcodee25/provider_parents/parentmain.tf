@@ -1,6 +1,6 @@
 module "resource_group" {
   source                  = "../Child_module/resource_group"
-  resource_group_name     = "ravirg66"
+  resource_group_name     = "ravirg666"
   resource_group_location = "East US"
 }
 # module "azurerm_virtual_network" {
