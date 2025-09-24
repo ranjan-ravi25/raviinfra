@@ -1,0 +1,46 @@
+trigger:
+  branches:
+    include:
+      - 'feature/*'   # Auto-trigger on feature branches
+
+pool:
+  name: 220925
+
+steps:
+  # Step 1: Install Terraform
+  - task: TerraformInstaller@1
+    displayName: "Install Latest Terraform"
+    inputs:
+      terraformVersion: 'latest'
+
+  # Step 2: Terraform Init
+  - task: TerraformTask@5
+    displayName: 'Terraform Init'
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/rgstgcodee25/provider_parents'
+      backendServiceArm: 'agentportal'
+      backendAzureRmResourceGroupName: 'rg24'
+      backendAzureRmStorageAccountName: 'stg25'
+      backendAzureRmContainerName: 'cont25'
+      backendAzureRmKey: 'pass245'
+
+  # Step 3: Terraform Plan
+  - task: TerraformTask@5
+    displayName: 'Terraform Plan'
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/rgstgcodee25/provider_parents'
+      environmentServiceNameAzureRM: 'agentportal'
+
+  # Step 4: Terraform Apply (ONLY for main)
+  - task: TerraformTask@5
+    displayName: 'Terraform Apply'
+    condition: eq(variables['Build.SourceBranchName'], 'main')   # NEVER runs on feature branches
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/rgstgcodee25/provider_parents'
+      environmentServiceNameAzureRM: 'agentportal'
