@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - 'feature/*'   # Trigger automatically on all feature branches
+      - 'feature/*'   # Automatically trigger on feature branch push
 
 pool:
   name: 220925
@@ -35,10 +35,10 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)/rgstgcodee25/provider_parents'
       environmentServiceNameAzureRM: 'agentportal'
 
-  # Step 4: Terraform Apply (NEVER run on feature branches)
+  # Step 4: Terraform Apply (runs only on main branch)
   - task: TerraformTask@5
     displayName: 'Terraform Apply'
-    condition: eq(variables['Build.SourceBranchName'], 'main')   # Only runs on main branch
+    condition: eq(variables['Build.SourceBranchName'], 'main')
     inputs:
       provider: 'azurerm'
       command: 'apply'
