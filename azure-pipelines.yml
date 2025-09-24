@@ -1,7 +1,8 @@
 trigger:
   branches:
     include:
-      - 'feature/*'   # Auto-trigger on feature branches
+      - 'feature/*'   # Auto-trigger only for feature branches
+      - 'main'        # Also trigger when merged to main
 
 pool:
   name: 220925
@@ -26,7 +27,7 @@ steps:
       backendAzureRmContainerName: 'cont25'
       backendAzureRmKey: 'pass245'
 
-  # Step 3: Terraform Plan
+  # Step 3: Terraform Plan (always runs on feature + main)
   - task: TerraformTask@5
     displayName: 'Terraform Plan'
     inputs:
@@ -35,10 +36,10 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)/rgstgcodee25/provider_parents'
       environmentServiceNameAzureRM: 'agentportal'
 
-  # Step 4: Terraform Apply (ONLY for main)
+  # Step 4: Terraform Apply (runs ONLY on main branch after merge)
   - task: TerraformTask@5
     displayName: 'Terraform Apply'
-    condition: eq(variables['Build.SourceBranchName'], 'main')   # NEVER runs on feature branches
+    condition: eq(variables['Build.SourceBranchName'], 'main')   # skip on feature/*
     inputs:
       provider: 'azurerm'
       command: 'apply'
