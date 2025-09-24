@@ -28,4 +28,13 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)\rgstgcodee25\provider_parents'
       environmentServiceNameAzureRM: 'agentportal'
 
+  - task: TerraformTask@5
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      workingDirectory: '$(System.DefaultWorkingDirectory)\rgstgcodee25\provider_parents'
+      environmentServiceNameAzureRM: 'agentportal'
+
+      
+
   
